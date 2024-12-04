@@ -18,7 +18,7 @@ const TEST: &str = "\
 ";
 
 fn main() -> Result<(), Error> {
-    fn parse_line<'a>(line: String) -> Option<(i32, i32)> {
+    fn parse_line(line: String) -> Option<(i32, i32)> {
         let parser: Regex = Regex::new(r"^(\d+)\s+(\d+)$").unwrap();
         parser
             .captures(line.as_str())
