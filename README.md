@@ -37,6 +37,9 @@
 <a href="2024/src/bin/11.rs">
   <img src=".aoc_tiles/tiles/2024/11.png" width="161px">
 </a>
+<a href="2024/src/bin/12.rs">
+  <img src=".aoc_tiles/tiles/2024/11.png" width="161px">
+</a>
 <h1 align="center">
   2023 - 50 ⭐
 </h1>
