@@ -428,6 +428,7 @@ dependencies = [
  "nalgebra",
  "ndarray",
  "prime_factorization",
+ "rand",
  "regex",
 ]
 
