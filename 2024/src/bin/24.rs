@@ -158,9 +158,9 @@ fn main() -> Result<(), Error> {
     assert_eq!(4, part1(BufReader::new(TEST1.as_bytes()), 3)?);
     assert_eq!(2024, part1(BufReader::new(TEST2.as_bytes()), 12)?);
 
-    // let input_file = BufReader::new(File::open(INPUT_FILE)?);
-    // let result = time_snippet!(part1(input_file, 46)?);
-    // println!("Result = {}", result);
+    let input_file = BufReader::new(File::open(INPUT_FILE)?);
+    let result = time_snippet!(part1(input_file, 46)?);
+    println!("Result = {}", result);
 
     println!("=== Part 2 ===");
     fn part2<R: BufRead>(
@@ -287,6 +287,8 @@ fn main() -> Result<(), Error> {
                 .collect::<HashMap<String, u8>>()
         }
 
+        // analyze rules to check
+        /*
         fn print_rules(
             input_map: &HashMap<String, u8>,
             gate_map: &HashMap<String, (String, String, String)>,
@@ -312,7 +314,7 @@ fn main() -> Result<(), Error> {
                     0
                 )
             )
-        });
+        });*/
 
         let pairs: Vec<(String, String)> = gate_map
             .keys()
@@ -328,14 +330,14 @@ fn main() -> Result<(), Error> {
             .flatten()
             .collect();
 
-        let percent_done = (pairs.iter().count() / 100) + 1;
+        // let percent_done = (pairs.iter().count() / 100) + 1;
         let answer = pairs
             .iter()
             .enumerate()
             .filter(|(i, (s1, s2))| {
-                if (i % percent_done) == 0 {
-                    println!("{}%", i / percent_done);
-                }
+                // if (i % percent_done) == 0 {
+                //     println!("{}%", i / percent_done);
+                // }
                 s1 > s2
                     && goals_and_wrong.iter().all(|(x1, x2, g, wrong, inp)| {
                         {
