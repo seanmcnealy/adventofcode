@@ -42,37 +42,29 @@ fn main() -> Result<(), Error> {
             .map(parse_line)
             .collect::<Vec<Vec<String>>>();
 
-        let mut a = lines[0].to_vec();
-        let towels = a
+        let towels: Vec<&String> = lines[0]
             .iter()
             .filter(|x| x.len() == 1 || x.contains("g"))
-            .map(|x| x.clone())
             .collect();
 
-        let b: Vec<String> = lines
+        let b: Vec<&String> = lines
             .iter()
-            .map(|x| {
-                if x.len() == 1 {
-                    Some(x[0].clone())
-                } else {
-                    None
-                }
-            })
+            .map(|x| if x.len() == 1 { Some(&x[0]) } else { None })
             .flatten()
             .collect();
 
-        fn check(a: String, b: &Vec<String>) -> bool {
+        fn check(a: &String, b: &Vec<&String>) -> bool {
             if a.is_empty() {
                 true
             } else {
                 let mut found = false;
-                for x in b {
+                for &x in b {
                     if a.eq(x) {
                         found = true;
                         break;
                     } else if a.starts_with(x) {
                         found = check(
-                            String::from_utf8(a.as_bytes()[x.len()..].to_vec()).unwrap(),
+                            &String::from_utf8(a.as_bytes()[x.len()..].to_vec()).unwrap(),
                             b,
                         );
                         if found {
@@ -84,16 +76,7 @@ fn main() -> Result<(), Error> {
             }
         }
 
-        Ok(b.iter()
-            .map(|goal| {
-                println!("{}", goal);
-                if check(goal.clone(), &towels) {
-                    1
-                } else {
-                    0
-                }
-            })
-            .sum())
+        Ok(b.iter().filter(|&goal| check(goal, &towels)).count())
     }
     assert_eq!(6, part1(BufReader::new(TEST.as_bytes()))?);
 
@@ -113,31 +96,27 @@ fn main() -> Result<(), Error> {
             .map(parse_line)
             .collect::<Vec<Vec<String>>>();
 
-        let mut a = lines[0].to_vec();
-        let towels = a.iter().map(|x| x.clone()).collect::<HashSet<String>>();
+        let towels = lines[0]
+            .iter()
+            .map(|x| x.clone())
+            .collect::<HashSet<String>>();
 
         let max_size = towels.iter().map(|s| s.len()).max().unwrap();
 
-        let b: Vec<String> = lines
+        let b: Vec<&String> = lines
             .iter()
-            .map(|x| {
-                if x.len() == 1 {
-                    Some(x[0].clone())
-                } else {
-                    None
-                }
-            })
+            .map(|x| if x.len() == 1 { Some(&x[0]) } else { None })
             .flatten()
             .collect();
 
-        fn check(max_size: usize, a: String, b: &HashSet<String>) -> usize {
-            if memo.lock().unwrap().contains_key(&a) {
-                *memo.lock().unwrap().get(&a).unwrap()
+        fn check(max_size: usize, a: &String, b: &HashSet<String>) -> usize {
+            if memo.lock().unwrap().contains_key(a) {
+                *memo.lock().unwrap().get(a).unwrap()
             } else {
                 let answer = (1..=max_size)
                     .map(|i| {
                         if i == a.len() {
-                            if b.contains(&a) {
+                            if b.contains(a) {
                                 1
                             } else {
                                 0
@@ -149,7 +128,7 @@ fn main() -> Result<(), Error> {
                         {
                             check(
                                 max_size,
-                                String::from_utf8(a.as_bytes()[i..].to_vec()).unwrap(),
+                                &String::from_utf8(a.as_bytes()[i..].to_vec()).unwrap(),
                                 b,
                             )
                         } else {
@@ -162,12 +141,7 @@ fn main() -> Result<(), Error> {
             }
         }
 
-        Ok(b.iter()
-            .map(|goal| {
-                println!("{}", goal);
-                check(max_size, goal.clone(), &towels)
-            })
-            .sum())
+        Ok(b.iter().map(|&goal| check(max_size, goal, &towels)).sum())
     }
     assert_eq!(16, part2(BufReader::new(TEST.as_bytes()))?);
 

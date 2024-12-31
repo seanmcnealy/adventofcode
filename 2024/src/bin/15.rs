@@ -49,7 +49,7 @@ fn main() -> Result<(), Error> {
         let (grid_reader, instruction_reader): (Vec<_>, Vec<_>) =
             reader.lines().flatten().partition(|r| r.contains("#"));
 
-        let mut grid = grid_reader
+        let mut grid = &mut grid_reader
             .iter()
             .map(|line| line.as_bytes().to_vec())
             .collect::<Vec<Vec<u8>>>();
@@ -75,19 +75,18 @@ fn main() -> Result<(), Error> {
         grid[agent.0][agent.1] = '.' as u8;
 
         fn m(
-            grid_ref: &Vec<Vec<u8>>,
+            grid: &mut Vec<Vec<u8>>,
             x: usize,
             y: usize,
             dx: isize,
             dy: isize,
-        ) -> (Vec<Vec<u8>>, bool) {
-            let mut grid = grid_ref.clone();
+        ) -> (&mut Vec<Vec<u8>>, bool) {
             if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == '.' as u8 {
                 grid[(x as isize + dx) as usize][(y as isize + dy) as usize] = grid[x][y];
                 (grid, true)
             } else if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == 'O' as u8 {
                 let (mut inner_grid, worked) = m(
-                    &grid,
+                    grid,
                     (x as isize + dx) as usize,
                     (y as isize + dy) as usize,
                     dx,
@@ -108,7 +107,7 @@ fn main() -> Result<(), Error> {
         for i in instructions {
             if match i as char {
                 '^' => {
-                    let (next, worked) = m(&grid, agent.0, agent.1, -1, 0);
+                    let (next, worked) = m(grid, agent.0, agent.1, -1, 0);
                     grid = next;
                     if worked {
                         agent = (agent.0 - 1, agent.1);
@@ -119,7 +118,7 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 '<' => {
-                    let (next, worked) = m(&grid, agent.0, agent.1, 0, -1);
+                    let (next, worked) = m(grid, agent.0, agent.1, 0, -1);
                     grid = next;
                     if worked {
                         agent = (agent.0, agent.1 - 1);
@@ -130,7 +129,7 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 '>' => {
-                    let (next, worked) = m(&grid, agent.0, agent.1, 0, 1);
+                    let (next, worked) = m(grid, agent.0, agent.1, 0, 1);
                     grid = next;
                     if worked {
                         agent = (agent.0, agent.1 + 1);
@@ -141,7 +140,7 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 'v' => {
-                    let (next, worked) = m(&grid, agent.0, agent.1, 1, 0);
+                    let (next, worked) = m(grid, agent.0, agent.1, 1, 0);
                     grid = next;
                     if worked {
                         agent = (agent.0 + 1, agent.1);
@@ -185,7 +184,7 @@ fn main() -> Result<(), Error> {
         let (grid_reader, instruction_reader): (Vec<_>, Vec<_>) =
             reader.lines().flatten().partition(|r| r.contains("#"));
 
-        let mut grid = grid_reader
+        let mut grid = &mut grid_reader
             .iter()
             .map(|line| {
                 line.as_bytes()
@@ -226,14 +225,12 @@ fn main() -> Result<(), Error> {
         }
         grid[agent.0][agent.1] = '.' as u8;
 
-        fn can_m(grid_ref: &Vec<Vec<u8>>, x: usize, y: usize, dx: isize, dy: isize) -> bool {
-            let mut grid = grid_ref.clone();
+        fn can_m(grid: &Vec<Vec<u8>>, x: usize, y: usize, dx: isize, dy: isize) -> bool {
             if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == '.' as u8 {
-                grid[(x as isize + dx) as usize][(y as isize + dy) as usize] = grid[x][y];
                 true
             } else if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == '[' as u8 {
                 let worked = can_m(
-                    &grid,
+                    grid,
                     (x as isize + dx) as usize,
                     (y as isize + dy) as usize,
                     dx,
@@ -241,7 +238,7 @@ fn main() -> Result<(), Error> {
                 );
                 let worked2 = if dx != 0 {
                     can_m(
-                        &grid,
+                        grid,
                         (x as isize + dx) as usize,
                         (y as isize + dy + 1) as usize,
                         dx,
@@ -257,7 +254,7 @@ fn main() -> Result<(), Error> {
                 }
             } else if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == ']' as u8 {
                 let worked = can_m(
-                    &grid,
+                    grid,
                     (x as isize + dx) as usize,
                     (y as isize + dy) as usize,
                     dx,
@@ -265,7 +262,7 @@ fn main() -> Result<(), Error> {
                 );
                 let worked2 = if dx != 0 {
                     can_m(
-                        &grid,
+                        grid,
                         (x as isize + dx) as usize,
                         (y as isize + dy - 1) as usize,
                         dx,
@@ -284,14 +281,19 @@ fn main() -> Result<(), Error> {
             }
         }
 
-        fn do_m(grid_ref: &Vec<Vec<u8>>, x: usize, y: usize, dx: isize, dy: isize) -> Vec<Vec<u8>> {
-            let mut grid = grid_ref.clone();
+        fn do_m(
+            grid: &mut Vec<Vec<u8>>,
+            x: usize,
+            y: usize,
+            dx: isize,
+            dy: isize,
+        ) -> &mut Vec<Vec<u8>> {
             if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == '.' as u8 {
                 grid[(x as isize + dx) as usize][(y as isize + dy) as usize] = grid[x][y];
                 grid
             } else if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == '[' as u8 {
                 let mut inner_grid = do_m(
-                    &grid,
+                    grid,
                     (x as isize + dx) as usize,
                     (y as isize + dy + 1) as usize,
                     dx,
@@ -299,7 +301,7 @@ fn main() -> Result<(), Error> {
                 );
                 let mut inner_grid2 = if (dx != 0) {
                     do_m(
-                        &inner_grid,
+                        inner_grid,
                         (x as isize + dx) as usize,
                         (y as isize + dy) as usize,
                         dx,
@@ -319,7 +321,7 @@ fn main() -> Result<(), Error> {
                 inner_grid2
             } else if grid[(x as isize + dx) as usize][(y as isize + dy) as usize] == ']' as u8 {
                 let mut inner_grid = do_m(
-                    &grid,
+                    grid,
                     (x as isize + dx) as usize,
                     (y as isize + dy - 1) as usize,
                     dx,
@@ -327,7 +329,7 @@ fn main() -> Result<(), Error> {
                 );
                 let mut inner_grid2 = if dx != 0 {
                     do_m(
-                        &inner_grid,
+                        inner_grid,
                         (x as isize + dx) as usize,
                         (y as isize + dy) as usize,
                         dx,
@@ -353,9 +355,9 @@ fn main() -> Result<(), Error> {
         for i in instructions {
             if match i as char {
                 '^' => {
-                    let worked = can_m(&grid, agent.0, agent.1, -1, 0);
+                    let worked = can_m(grid, agent.0, agent.1, -1, 0);
                     if worked {
-                        let next = do_m(&grid, agent.0, agent.1, -1, 0);
+                        let next = do_m(grid, agent.0, agent.1, -1, 0);
                         grid = next;
                         agent = (agent.0 - 1, agent.1);
                         grid[agent.0][agent.1] = '.' as u8;
@@ -365,9 +367,9 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 '<' => {
-                    let worked = can_m(&grid, agent.0, agent.1, 0, -1);
+                    let worked = can_m(grid, agent.0, agent.1, 0, -1);
                     if worked {
-                        let next = do_m(&grid, agent.0, agent.1, 0, -1);
+                        let next = do_m(grid, agent.0, agent.1, 0, -1);
                         grid = next;
                         agent = (agent.0, agent.1 - 1);
                         grid[agent.0][agent.1] = '.' as u8;
@@ -377,9 +379,9 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 '>' => {
-                    let worked = can_m(&grid, agent.0, agent.1, 0, 1);
+                    let worked = can_m(grid, agent.0, agent.1, 0, 1);
                     if worked {
-                        let next = do_m(&grid, agent.0, agent.1, 0, 1);
+                        let next = do_m(grid, agent.0, agent.1, 0, 1);
                         grid = next;
                         agent = (agent.0, agent.1 + 1);
                         grid[agent.0][agent.1] = '.' as u8;
@@ -389,9 +391,9 @@ fn main() -> Result<(), Error> {
                     }
                 }
                 'v' => {
-                    let worked = can_m(&grid, agent.0, agent.1, 1, 0);
+                    let worked = can_m(grid, agent.0, agent.1, 1, 0);
                     if worked {
-                        let next = do_m(&grid, agent.0, agent.1, 1, 0);
+                        let next = do_m(grid, agent.0, agent.1, 1, 0);
                         grid = next;
                         agent = (agent.0 + 1, agent.1);
                         grid[agent.0][agent.1] = '.' as u8;

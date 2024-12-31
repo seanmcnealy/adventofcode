@@ -31,7 +31,7 @@ fn main() -> Result<(), Error> {
             })
             .collect::<Vec<Vec<u8>>>();
 
-        fn evaluate(grid: Vec<Vec<u8>>, x: usize, y: usize) -> u8 {
+        fn evaluate(grid: &Vec<Vec<u8>>, x: usize, y: usize) -> u8 {
             let mut level = grid[x][y];
             if level != 0 {
                 0
@@ -78,7 +78,7 @@ fn main() -> Result<(), Error> {
         Ok((0..grid.len())
             .map(|x| {
                 (0..grid[0].len())
-                    .map(|y| evaluate(grid.clone(), x, y) as usize)
+                    .map(|y| evaluate(&grid, x, y) as usize)
                     .sum::<usize>()
             })
             .sum::<usize>())
@@ -102,7 +102,7 @@ fn main() -> Result<(), Error> {
             })
             .collect::<Vec<Vec<u8>>>();
 
-        fn evaluate(grid: Vec<Vec<u8>>, x: usize, y: usize) -> u8 {
+        fn evaluate(grid: &Vec<Vec<u8>>, x: usize, y: usize) -> u8 {
             let mut level = grid[x][y];
             if level != 0 {
                 0
@@ -149,7 +149,7 @@ fn main() -> Result<(), Error> {
         Ok((0..grid.len())
             .map(|x| {
                 (0..grid[0].len())
-                    .map(|y| evaluate(grid.clone(), x, y) as usize)
+                    .map(|y| evaluate(&grid, x, y) as usize)
                     .sum::<usize>()
             })
             .sum::<usize>())

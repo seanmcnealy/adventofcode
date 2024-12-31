@@ -118,7 +118,7 @@ fn main() -> Result<(), Error> {
                         let rules = grid.slice(s![.., usize::from(i)]);
                         let insert_location = new_row
                             .iter()
-                            .take_while(|&&j| if rules[usize::from(j)] { false } else { true })
+                            .take_while(|&&j| !rules[usize::from(j)])
                             .collect::<Vec<&u8>>()
                             .len();
                         new_row.insert(insert_location, i);

@@ -20,18 +20,15 @@ const TEST: &str = "\
 fn main() -> Result<(), Error> {
     fn parse_line(line: String) -> Option<(i32, i32)> {
         let parser: Regex = Regex::new(r"^(\d+)\s+(\d+)$").unwrap();
-        parser
-            .captures(line.as_str())
-            .map(|cap| {
-                cap.get(1)
-                    .unwrap()
-                    .as_str()
-                    .parse::<i32>()
-                    .and_then(|x| cap.get(2).unwrap().as_str().parse::<i32>().map(|y| (x, y)))
-                    .map(|x| Some(x))
-                    .unwrap_or(None)
-            })
-            .flatten()
+        parser.captures(line.as_str()).filter_map(|cap| {
+            cap.get(1)
+                .unwrap()
+                .as_str()
+                .parse::<i32>()
+                .and_then(|x| cap.get(2).unwrap().as_str().parse::<i32>().map(|y| (x, y)))
+                .map(|x| Some(x))
+                .unwrap_or(None)
+        })
     }
 
     println!("=== Part 1 ===");
@@ -57,7 +54,7 @@ fn main() -> Result<(), Error> {
         Ok(answer2
             .iter()
             .zip(answer3.iter())
-            .map(|(x, y)| (x - y).abs())
+            .map(|(x, y)| (*x - *y).abs())
             .sum())
     }
     assert_eq!(11, part1(BufReader::new(TEST.as_bytes()))?);
@@ -86,7 +83,7 @@ fn main() -> Result<(), Error> {
             },
         );
 
-        Ok(answer2.iter().map(|x| x * *map.get(x).unwrap_or(&0)).sum())
+        Ok(answer2.iter().map(|x| *x * *map.get(x).unwrap_or(&0)).sum())
     }
     assert_eq!(31, part2(BufReader::new(TEST.as_bytes()))?);
 

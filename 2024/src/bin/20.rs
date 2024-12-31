@@ -87,8 +87,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x - 1,
                         agent_y,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x - 1, agent_y)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -102,8 +101,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x + 1,
                         agent_y,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x + 1, agent_y)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -117,8 +115,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x,
                         agent_y - 1,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x, agent_y - 1)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -132,8 +129,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x,
                         agent_y + 1,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x, agent_y + 1)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -234,8 +230,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x - 1,
                         agent_y,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x - 1, agent_y)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -249,8 +244,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x + 1,
                         agent_y,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x + 1, agent_y)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -264,8 +258,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x,
                         agent_y - 1,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x, agent_y - 1)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
@@ -279,8 +272,7 @@ fn main() -> Result<(), Error> {
                     search.push_back((
                         agent_x,
                         agent_y + 1,
-                        path.clone()
-                            .iter()
+                        path.iter()
                             .chain(vec![(agent_x, agent_y + 1)].iter())
                             .map(|&x| x)
                             .collect::<Vec<(usize, usize)>>(),
