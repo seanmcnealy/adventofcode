@@ -2,7 +2,16 @@
 
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  2024 - 50 ⭐
+  Advent of Code - 102/504 ⭐
+</h1>
+<h1 align="center">
+  2025 - 2 ⭐ - Go
+</h1>
+<a href="2025/1.go">
+  <img src=".aoc_tiles/tiles/2025/01.png" width="161px">
+</a>
+<h1 align="center">
+  2024 - 50 ⭐ - Rust
 </h1>
 <a href="2024/src/bin/1.rs">
   <img src=".aoc_tiles/tiles/2024/01.png" width="161px">
@@ -80,7 +89,7 @@
   <img src=".aoc_tiles/tiles/2024/25.png" width="161px">
 </a>
 <h1 align="center">
-  2023 - 50 ⭐
+  2023 - 50 ⭐ - Python
 </h1>
 <a href="2023/1.py">
   <img src=".aoc_tiles/tiles/2023/01.png" width="161px">
