@@ -35,12 +35,6 @@ func parse(file io.Reader) []string {
 	return answer
 }
 
-var directions = [][]int{
-	{-1, -1}, {-1, 0}, {-1, 1},
-	{0, -1}, {0, 1},
-	{1, -1}, {1, 0}, {1, 1},
-}
-
 func part1(data []string) int {
 	var acc = 0
 
