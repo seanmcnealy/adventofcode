@@ -2,7 +2,7 @@
 
 <!-- AOC TILES BEGIN -->
 <h1 align="center">
-  2025 - 14 ⭐ - Go
+  2025 - 16 ⭐ - Go
 </h1>
 <a href="2025/1/1.go">
   <img src=".aoc_tiles/tiles/2025/01.png" width="161px">
@@ -24,6 +24,9 @@
 </a>
 <a href="2025/7/7.go">
   <img src=".aoc_tiles/tiles/2025/07.png" width="161px">
+</a>
+<a href="2025/8/8.go">
+  <img src=".aoc_tiles/tiles/2025/08.png" width="161px">
 </a>
 <h1 align="center">
   2024 - 50 ⭐ - Rust
