@@ -153,12 +153,12 @@ func recommendLocations(state state) [][2]int {
 			}
 		}
 		answer = append(answer,
-			[2]int{state.placedLocations[si][0] + 3, state.placedLocations[si][1] - 1})
-		//[2]int{state.placedLocations[si][0] + 3, state.placedLocations[si][1]},
-		//[2]int{state.placedLocations[si][0] + 3, state.placedLocations[si][1] + 1},
-		//[2]int{state.placedLocations[si][0] - 1, state.placedLocations[si][1] + 3},
-		//[2]int{state.placedLocations[si][0], state.placedLocations[si][1] + 3})
-		//[2]int{state.placedLocations[si][0] + 1, state.placedLocations[si][1] + 3}
+			[2]int{state.placedLocations[si][0] + 3, state.placedLocations[si][1] - 1},
+			[2]int{state.placedLocations[si][0] + 3, state.placedLocations[si][1]},
+			//[2]int{state.placedLocations[si][0] + 3, state.placedLocations[si][1] + 1},
+			[2]int{state.placedLocations[si][0] - 1, state.placedLocations[si][1] + 3},
+			[2]int{state.placedLocations[si][0], state.placedLocations[si][1] + 3})
+		//[2]int{state.placedLocations[si][0] + 1, state.placedLocations[si][1] + 3})
 	}
 	return answer
 }
@@ -167,6 +167,13 @@ func doesFit(st state, shape [3][3]bool, x, y, maxx, maxy int) bool {
 	if x < 0 || y < 0 {
 		return false
 	}
+	for i := range 3 {
+		for j := range 3 {
+			if shape[i][j] && x+i >= maxx || y+j >= maxy {
+				return false
+			}
+		}
+	}
 	for i, sh := range st.placedShapes {
 		var loc = st.placedLocations[i]
 		var dx = loc[0] - x
@@ -174,10 +181,7 @@ func doesFit(st state, shape [3][3]bool, x, y, maxx, maxy int) bool {
 
 		for i := range 3 {
 			for j := range 3 {
-				if sh[i][j] && dx+i >= 0 && dx+i < 3 && dy+j >= 0 && dy+j < 3 && shape[dx+i][dy+j] {
-					return false
-				}
-				if sh[i][j] && x+i >= maxx || y+j >= maxy {
+				if shape[i][j] && dx+i >= 0 && dx+i < 3 && dy+j >= 0 && dy+j < 3 && sh[dx+i][dy+j] {
 					return false
 				}
 			}
